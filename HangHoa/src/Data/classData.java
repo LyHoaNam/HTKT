@@ -16,91 +16,85 @@ import java.sql.Statement;
  *
  * @author cuhoa_000
  */
-public class classData 
-{
-     private String ulr="jdbc:sqlserver://localhost:1433;databaseName=HTKT";
-     private String username="sa";
-     private String password="sa";
-     
-     private CallableStatement cstmDB=null;
-     
-    private Connection con=null;
-    public classData()
-    {}
-    public boolean ConnectDB()
+public class classData {
+    private Connection conn=null;
+    private Statement stm=null;
+    private ResultSet rs=null;
+    private CallableStatement cstmDB = null;
+    private  String hostName = "localhost";
+ 
+    private String dbName = "quanlyheo";
+    private String userName = "root";
+    private String password = "";
+    private boolean connectDB()
     {
-        boolean res=true;
-        try
+    boolean res=true;
+    try
+    {
+        Class.forName("com.mysql.jdbc.Driver");
+        String connectionURL = "jdbc:mysql://" + hostName + ":3306/" + dbName;
+        conn = DriverManager.getConnection(connectionURL, userName,
+             password);
+        if(conn==null)
         {
-           
-            
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            con =DriverManager.getConnection(ulr,username,password);
-          
-        }
-        catch (Exception exc)
-        {
-            System.out.println("Ket noi khong thanh cong!");
             res=false;
         }
-        if(con==null)
-        {   res=false;   }
-        return res;
     }
-    private boolean closeDB()
+    catch(SQLException | ClassNotFoundException exc)
     {
-        boolean res=true;
-        try
-        {
-            if(!con.isClosed())
-            con.close();
-        }
-        catch(Exception exc)
-        {res= false;}
-        return res;
+        System.out.println("Ngoai le tai classData.Data");
+        res= false;
+    }
+   return res;
     }
     public ResultSet getData(String str)
     {
         ResultSet res=null;
+        //System.out.println(str);
         try
         {
-            if(ConnectDB())
+            if(connectDB())
             {
-                cstmDB=con.prepareCall(str);
-                res=cstmDB.executeQuery();
+//                cstmDB = conn.prepareCall(str);   //query in format "{? = call myfunc}"
+//                res = cstmDB.executeQuery();  
+                
+                stm = conn.createStatement();
+                res = stm.executeQuery(str);
+                
             }
+                    
         }
         catch(Exception exc)
         {
             res=null;
-            System.out.println("Ngoai le tai classData!" +exc);
-        }
-        finally
-        {
-           // closeDB();
+            System.out.println("Ngoai le tai ResultSet classData.Data");
         }
         return res;
     }
-    public boolean updateData(String str)// throws SQLException
+    public boolean updateData(String sql) throws SQLException
     {
         boolean res=true;
         try
         {
-            if(ConnectDB())
+            System.out.println(sql);
+            if(connectDB())
             {
-                cstmDB=con.prepareCall(str);
-                cstmDB.executeUpdate();;
+               
+                stm=conn.createStatement();
+                stm.executeUpdate(sql);
+                
             }
         }
         catch(Exception exc)
         {
             res=false;
-            System.out.println("Loi khi updateData!");
+            System.out.println("Ngoai le o updateData classData.Data");
         }
-        finally
-        {closeDB();}
         return res;
     }
 
-    
+            
+ 
+
 }
+
