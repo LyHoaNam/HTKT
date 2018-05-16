@@ -18,4 +18,5 @@ public class NhatKyBanHangBUS {
         String sql="Select * from HoaDon";
         return DB.getData(sql);
     }
+    
 }
