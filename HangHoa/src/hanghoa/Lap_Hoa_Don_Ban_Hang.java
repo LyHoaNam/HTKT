@@ -1,5 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
+/*//GEN-FIRST:event_jT_SoseriActionPerformed
+ * To change this license header, choose License Headers in Project Properties.//GEN-LAST:event_jT_SoseriActionPerformed
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
